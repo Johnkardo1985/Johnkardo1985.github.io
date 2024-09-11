@@ -54,7 +54,7 @@
         };
 
         $scope.decreaseValue = function(food) {
-          if (food.value > 0) {
+          if (food.value >= 0) {
             food.value--;
             $scope.saveData(); // Save data when updated
           }
