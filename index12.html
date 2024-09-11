@@ -1,0 +1,118 @@
+<html ng-app="custom-webapp-ui" lang="fa" style="background-color: Red">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script>
+    angular.module("custom-webapp-ui", []).controller('CustomUIController', function CustomUIController($scope) {
+      // Initialize the foods array
+      $scope.foods = [
+        { name: "سوپ ۳۰۰۰۰", value: 0 },
+        { name: "خیارماست ۳۰۰۰۰", value: 0 },
+        { name: "سالاد شیرازی ۳۰۰۰۰", value: 0 },
+        { name: "سالاد فصل ۵۰۰۰۰", value: 0 },
+        { name: "ماست موسیر ۲۵۰۰۰", value: 0 },
+        { name: "ماست چکیده ۳۰۰۰۰", value: 0 },
+        { name: "زیتون شور ۳۰۰۰۰", value: 0 },
+        { name: "زیتون پرورده ۳۰۰۰۰", value: 0 },
+        { name: "سینی سبزیجات ۴۵۰۰۰", value: 0 },
+        { name: "آب دوغ خیار ۶۹۰۰۰", value: 0 }
+      ];
+
+      // Load saved data from localStorage
+      $scope.loadData = function() {
+        const savedData = localStorage.getItem('foodData');
+        if (savedData) {
+          $scope.foods = JSON.parse(savedData);
+        }
+      };
+
+      // Save data to localStorage
+      $scope.saveData = function() {
+        localStorage.setItem('foodData', JSON.stringify($scope.foods));
+      };
+
+      // Reset data
+      $scope.resetData = function() {
+        $scope.foods = $scope.foods.map(food => ({ ...food, value: 0 }));
+        $scope.saveData(); // Save reset data to localStorage
+      };
+
+      // Call loadData to initialize food values
+      $scope.loadData();
+
+      const mainButton = window.Telegram.WebApp.MainButton;
+      mainButton.text = "ثبت سفارش و بازگشت به منوی اصلی";
+      mainButton.fontsize = "50px";
+      mainButton.enable();
+      mainButton.show();
+      mainButton.onClick(function() {
+        window.Telegram.WebApp.sendData(JSON.stringify($scope.foods));
+      });
+
+      $scope.increaseValue = function(food) {
+        if (food.value < 50) {
+          food.value++;
+          $scope.saveData(); // Save data when updated
+        }
+      };
+
+      $scope.decreaseValue = function(food) {
+        if (food.value > 0) {
+          food.value--;
+          $scope.saveData(); // Save data when updated
+        }
+      };
+      if (window.Telegram.WebApp.initData) {
+        const initData = JSON.parse(decodeURIComponent(window.Telegram.WebApp.initData));
+        if (initData.command === '/start') {
+          $scope.resetData();
+        }
+      }
+      
+    });
+  </script>
+  <style>
+    .btn {
+      font-weight: bold;
+      font-size: 20px;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+      border: none;
+      background-color: #FFFDD0;
+      color: black;
+      margin: 0;
+      padding: 0;
+    }
+    .btn-decrease {
+      margin-right: 4px;
+    }
+    .food-item {
+      margin-bottom: 10px;
+    }
+    .food-name {
+      font-size: 23px;
+      font-weight: bold;
+      color: white;
+    }
+    .food-value {
+      color: yellow;
+      font-size: 23px;
+      font-weight: bold;
+      font-family: 'Roboto';
+    }
+  </style>
+</head>
+<body ng-controller="CustomUIController">
+  <div ng-repeat="food in foods" class="food-item">
+    <div style="width: 320px; display: inline-block">
+      <span class="food-name">{{food.name}} :</span>
+      <span class="food-value" ng-class="{'food-value': food.value > 0}">{{food.value}}</span>
+    </div>
+    <button class="btn btn-decrease" ng-click="decreaseValue(food)">-</button>
+    <button class="btn" ng-click="increaseValue(food)">+</button>
+  </div>
+</body>
+</html>
