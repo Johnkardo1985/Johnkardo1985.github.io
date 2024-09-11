@@ -1,0 +1,121 @@
+
+<html ng-app="custom-webapp-ui" lang="fa" style="background-color: Red">
+  <head>
+    <meta charset="UTF-8">
+    <!-- Load the Telegram Library -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Load the AngularJS Library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script>
+      angular.module("custom-webapp-ui", []).controller('CustomUIController', function CustomUIController($scope) {
+        // Initialize the foods array
+        $scope.foods = [
+          { name: "آدانا کباب ۱۲۵۰۰۰", value: 0 },
+          { name: "  آدانا دوسیخ ۲۵۰۰۰۰", value: 0 },
+          { name: "چلو آدانا ۱۹۰۰۰۰", value: 0 },
+          { name: "چلو آدانا دوسیخ ۳۱۵۰۰۰", value: 0 }
+          //{ name: "ماست موسیر ۲۵۰۰۰", value: 0 },
+          //{ name: "ماست چکیده ۳۰۰۰۰", value: 0 },
+          //{ name: "زیتون شور ۳۰۰۰۰", value: 0 },
+          //{ name: "زیتون پرورده ۳۰۰۰۰", value: 0 },
+          //{ name: "سینی سبزیجات ۴۵۰۰۰", value: 0 },
+          //{ name: "آب دوغ خیار ۶۹۰۰۰", value: 0 }
+        ];
+
+        // Load saved data from localStorage
+        //$scope.loadData = function() {
+          //const savedData = localStorage.getItem('foodData');
+          //if (savedData) {
+            //$scope.foods = JSON.parse(savedData);
+          //}
+        //};
+
+        // Save data to localStorage
+        //$scope.saveData = function() {
+          //localStorage.setItem('foodData', JSON.stringify($scope.foods));
+        //};
+
+        // Call loadData to initialize food values
+        //$scope.loadData();
+
+        const mainButton = window.Telegram.WebApp.MainButton;
+        mainButton.text = "ثبت سفارش و بازگشت به منوی اصلی";
+        mainButton.fontsize= "50px";
+        mainButton.enable();
+        mainButton.show();
+        mainButton.onClick(function(){
+          window.Telegram.WebApp.sendData(JSON.stringify($scope.foods));
+        });
+
+        $scope.increaseValue = function(food) {
+          if (food.value < 50) {
+            food.value++;
+            //$scope.saveData(); // Save data when updated
+          }
+        };
+
+        $scope.decreaseValue = function(food) {
+          if (food.value > 0) {
+            food.value--;
+            //$scope.saveData(); // Save data when updated
+          }
+        };
+      });
+    </script>
+    <style>
+      /* Style for the title */
+      .page-title {
+        font-weight: bold;
+        color: teal;
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      		 width : 100% ;
+      		 font-size : 50px ;
+      }
+
+      /* Style for the buttons */
+      .btn {
+        font-weight: bold;
+        font-size: 20px;
+        width: 30px; /* Set width */
+        height: 30px; /* Set height */
+        text-align: center; /* Center text horizontally */
+        line-height: 30px; /* Center text vertically */
+        border: none; /* Remove border */
+        background-color: #FFFDD0; /* Button background color */
+        color: black; /* Button text color */
+        margin: 0; /* Remove default margins */
+        padding: 0; /* Remove padding */
+      }
+      .btn-decrease {
+        margin-right: 4px; /* Space between - and + buttons */
+      }
+      .food-item {
+        margin-bottom: 10px; /* Add space between rows */
+      }
+      .food-name {
+        font-size: 23px;
+        font-weight: bold;
+        color: white; /* Food name color */
+      }
+      .food-value {
+        color: black; /* Food value color */
+        font-size: 23px;
+        font-weight: bold;
+        font-family: 'Roboto';
+      }
+    </style>
+  </head>
+  <body ng-controller="CustomUIController">
+    <h1 class="page-title">آدانا کباب </h1>
+    <div ng-repeat="food in foods" class="food-item">
+      <div style="width: 320px; display: inline-block">
+        <span class="food-name">{{food.name}} :</span>
+        <span class="food-value" ng-class="{'food-value': food.value > 0}">{{food.value}}</span>
+      </div>
+      <button class="btn btn-decrease" ng-click="decreaseValue(food)">-</button>
+      <button class="btn" ng-click="increaseValue(food)">+</button>
+    </div>
+  </body>
+</html>
