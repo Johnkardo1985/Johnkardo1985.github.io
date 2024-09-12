@@ -1,0 +1,546 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="fa" ng-app="foodApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Ordering App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: red; /* Light red background */
+            color: white; /* White text color */
+            font-family: Arial, sans-serif;
+        }
+        .container { 
+            width: 80%; 
+            margin: auto; 
+            padding-top: 20px; 
+            display: flex; 
+            flex-wrap: wrap; 
+        }
+        .menu { 
+            width: 40%; 
+            padding: 10px; 
+            box-sizing: border-box; 
+            border: 1px solid #ddd; 
+            margin: 5px; 
+        }
+        .menu:nth-child(1) { background-color: #008080; }
+        .menu:nth-child(2) { background-color: #008080; }
+        .menu:nth-child(3) { background-color: #008080; }
+        .menu:nth-child(4) { background-color: #008080; }
+        .menu:nth-child(5) { background-color: #008080; }
+        .menu:nth-child(6) { background-color: #008080; }
+        .menu:nth-child(7) { background-color: #008080; }
+        .menu:nth-child(8) { background-color: #008080; }
+        .menu:nth-child(9) { background-color: #008080; }
+        .menu:nth-child(10) { background-color: #008080; }
+        .menu:nth-child(11) { background-color: #008080; }
+        .menu:nth-child(12) { background-color: #008080; }
+        .menu:nth-child(13) { background-color: #008080; }
+        .menu:nth-child(14) { background-color: #008080; }
+        .menu-item { margin-bottom: 20px; }
+        .button { margin: 0 5px; }
+        .total-price { margin-top: 20px; font-weight: bold; font-size: 18px; }
+        .form-group { margin-top: 10px; }
+        .form-column { width: 100%; margin-top: 20px; }
+        .form-group label, .form-group input, .pay-button {
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .pay-button {
+            margin-top: 10px;
+            font-size: 20px;
+            background-color: #ffcc00;
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .basket { margin-top: 20px; font-size: 20px; font-weight: bold; color: green; }
+        .basket-header { font-weight: bold; font-size: 20px; }
+        .page-title { 
+            text-align: center; 
+            font-size: 24px; 
+            font-weight: bold; 
+            color: #ffffff; 
+            margin-top: 20px;
+        }
+        .audio-control {
+            display : none ;
+            position: absolute;
+            top: 20px; /* Adjust as needed */
+            left: 20px; /* Adjust as needed */
+            background: #ffffff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1000; /* Ensure it's above other elements */
+        }
+        .fa-volume-up::before {
+            content: "\f028"; /* Font Awesome volume up icon */
+        }
+        .fa-volume-mute::before {
+            content: "\f6a9"; /* Font Awesome volume mute icon */
+        }
+        .click-button {
+            font-weight: bold;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .instagram-telegram-icons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .instagram-telegram-icons a {
+            color: #fff;
+            font-size: 40px;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .view-basket-button {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            background-color: #ffcc00;
+            border: none;
+            cursor: pointer;
+            padding: 10px 2px;
+            margin-top: 10px;
+            display: block;
+            width: 60%;
+            text-align: center;
+        }
+        .send-location-button {
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            background-color: orange;
+            border: none;
+            cursor: pointer;
+            padding: 8px 16px;
+            margin-top: 10px;
+            display: block;
+            width: 50%;
+            text-align: center;
+        }
+		       .total-price { 
+           margin-top: 20px; 
+          font-weight: bold; 
+          font-size: 24px; /* Updated font size */
+       }
+		      .payment-options {
+           display: flex;
+           justify-content: space-between;
+           margin-top: 20px;
+       }
+       .payment-button {
+        font-weight: bold;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 28%; /* Adjust width as needed */
+        }
+
+       .online-button {
+              background-color: blue;
+        }
+
+        .home-button {
+            background-color: blue;
+        }
+		       .payment-link {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #ffffff; /* White text color */
+        }
+        .payment-link a {
+         color: #00f; /* Blue link color */
+         text-decoration: underline;
+        }
+		       .title-image {
+             display: block;
+             margin: 20px auto; /* Centers the image and adds space above and below */
+             width: 100%; /* Adjust width as needed */
+             max-width: 600px; /* Optional: Set a max width to control image size */
+        }
+
+
+
+
+    </style>
+</head>
+<body ng-controller="FoodController">
+    <div class="page-title">به سایت بوکان باربیکیو خوش آمدید</div>
+    <img src="static/bbq.jpg" alt="BBQ Image"  width= "400"  height="100" class="image-title">
+
+    <!-- Background Audio -->
+    <audio id="backgroundMusic" src="static/background.mp3" autoplay loop></audio>
+
+    <!-- Mute/Unmute Button -->
+    <button class="audio-control" ng-click="toggleAudio()">
+        <i class="fa" ng-class="{'fa-volume-up': !isMuted, 'fa-volume-mute': isMuted}"></i>
+    </button>
+
+    <div class="container">
+        <div class="menu" ng-repeat="menu in menus">
+            <h2>{{ menu.name }}</h2>
+            <button class="click-button" ng-click="selectMenu(menu.name)">کلیک کنید</button>
+            <div ng-show="menu.name === selectedMenu">
+                <div class="menu-item" ng-repeat="food in menu.items">
+                    <h3>{{ food.name }}</h3>
+                    <button class="button" ng-click="changeQuantity(menu.name, food.name, -1)">-</button>
+                    {{ selectedItems[food.name] || 0 }}
+                    <button class="button" ng-click="changeQuantity(menu.name, food.name, 1)">+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="total-price">
+        Total Price: T {{ totalPrice }}
+    </div>
+    
+    <button class="view-basket-button" ng-click="toggleBasket()">مشاهده سبد خرید 🛒</button>
+    
+    <button class="send-location-button" ng-click="getLocation()">ارسال لوکیشن</button>
+
+    <!-- Basket section -->
+    <div class="basket" ng-show="showBasket">
+        <div class="basket-header">سبد خرید:</div>
+        <div ng-repeat="item in basketItems">
+            <p>{{ item.name }} {{ item.quantity }} : {{ item.total }}</p>
+        </div>
+        <div ng-if="basketItems.length === 0">سبد خرید شما خالی است.</div>
+    </div>
+
+    <!-- Form and Pay button -->
+    <div class="form-column">
+        <div class="form-group">
+            <label for="address">آدرس :</label>
+            <input type="text" id="address" ng-model="order.address" required>
+        </div>
+        <div class="form-group">
+            <label for="phone_number">شماره تماس:</label>
+            <input type="text" id="phone_number" ng-model="order.phone_number" required>
+        </div>
+        <button class="pay-button" ng-click="submitOrder()">پرداخت</button>
+    		   <!-- Payment options -->
+        <div class="payment-options" ng-show="showPaymentOptions">
+        <button class="payment-button online-button" ng-click="payOnline()">پرداخت آنلاین</button>
+        <button class="payment-button home-button" ng-click="payAtHome()">پرداخت درب منزل</button>
+        </div>
+    		<!-- Payment link message -->
+        <div class="payment-link" ng-show="showPaymentLink">
+    روی لینک زیر کلیک کنید: <br>
+        <a href="http://www.pay.com" target="_blank">www.pay.com</a>
+        </div>
+
+
+    </div>
+
+    <!-- Instagram and Telegram Icons -->
+    <div class="instagram-telegram-icons">
+        <a href="https://www.instagram.com/boukan.bbq?igsh=MWFpZzJwdWM3Nno4cw==" target="_blank" class="fab fa-instagram"></a>
+        <a href="https://t.me/Boukan_barbecue_bot" target="_blank" class="fab fa-telegram"></a>
+    </div>
+
+    <script>
+        angular.module('foodApp', [])
+            .controller('FoodController', ['$scope', '$http', function($scope, $http) {
+                $scope.selectedMenu = ''; // Currently selected menu
+                $scope.showBasket = false; // Control basket visibility
+                $scope.isMuted = false; // Audio muted state
+                $scope.showPaymentOptions = false; // Control visibility of payment options
+                $scope.showPaymentLink = false; // Control payment link visibility
+
+                // Initialize audio
+                var audio = document.getElementById('backgroundMusic');
+                
+                // Play audio on page load
+                window.addEventListener('load', function() {
+                    audio.play().catch(error => {
+                        console.error('Error playing audio:', error);
+                    });
+                });
+
+                // Toggle audio mute/unmute
+                $scope.toggleAudio = function() {
+                    $scope.isMuted = !$scope.isMuted;
+                    audio.muted = $scope.isMuted;
+                };
+
+                // Initialize menu items
+                $scope.menus = [
+                    {
+                        name: 'کباب',
+                        items: [
+                            { name: 'کوبیده تک سیخ', price: 99000 },
+                            { name: 'کوبیده دوسیخ', price: 199000 },
+                            { name: 'چلو کوبیده تک سیخ', price: 165000 },
+                            { name: 'چلو کوبیده مخصوص', price: 339000 }
+                        ]
+                    },
+                    {
+                        name: 'آدانا کباب',
+                        items: [
+                            { name: 'آدانا کباب', price: 125000 },
+                            { name: 'آدانا دوسیخ', price: 245000 },
+                            { name: 'چلو آدانا کباب', price: 215000 },
+                            { name: 'چلو آدانا مخصوص', price: 425000 }
+                        ]
+                    },
+                    {
+                        name: 'بختیاری',
+                        items: [
+                            { name: 'بختیاری تک سیخ', price: 145000 },
+                            { name: 'بختیاری دوسیخ', price: 275000 },
+                            { name: 'چلو بختیاری', price: 255000 },
+                            { name: 'چلو بختیاری مخصوص', price: 495000 }
+                        ]
+                    },
+                    {
+                        name: 'کباب چنجه',
+                        items: [
+                            { name: 'چنجه گوشت', price: 95000 },
+                            { name: 'چنجه گوشت دوسیخ', price: 198000 },
+                            { name: 'چلوکباب چنجه', price: 209000 },
+                            { name: 'چلوکباب چنجه مخصوص', price: 345000 }
+                        ]
+                    },
+                    {
+                        name: 'چلوکباب ها',
+                        items: [
+                            { name: 'چلو کاسه کباب', price: 369000 },
+                            { name: 'چلوکباب بختیاری', price: 315000 },
+                            { name: 'چلوکباب وزیری', price: 299000 }
+                        ]
+                    },
+                    {
+                        name: 'رولت ها',
+                        items: [
+                            { name: 'رولت گوشت', price: 229000 },
+                            { name: 'رولت قفقازی', price: 229000 }
+                        ]
+                    },
+                    {
+                        name: "جوجه زعفرانی",
+                        items: [
+                            { name: "جوجه زعفرانی", price: 105000 },
+                            { name: "جوجه زعفرانی دوسیخ", price: 210000 },
+                            { name: "چلو جوجه زعفرانی", price: 165000 },
+                            { name: "چلو جوجه زعفرانی مخصوص", price: 209000 }
+                        ]
+                    },
+                    {
+                        name: "جوجه حلزونی",
+                        items: [
+                            { name: 'جوجه حلزونی', price: 149000 },
+                            { name: 'جوجه حلزونی دو سیخ', price: 298000 },
+                            { name: 'چلو جوجه حلزونی', price: 215000 },
+                            { name: 'چلو جوجه حلزونی مخصوص', price: 360000 }
+                        ]
+                    },
+                    {
+                        name: "جوجه لاری",
+                        items: [
+                            { name: "جوجه لاری", price: 109000 },
+                            { name: "جوجه لاری دو سیخ", price: 218000 },
+                            { name: "چلو جوجه لاری", price: 175000 },
+                            { name: "چلو جوجه لاری مخصوص", price: 215000 }
+                        ]
+                    },
+                    {
+                        name: "جوجه مکزیکی",
+                        items: [
+                            { name: "جوجه مکزیکی", price: 109000 },
+                            { name: "جوجه مکزیکی دو سیخ", price: 218000 },
+                            { name: "چلو جوجه مکزیکی", price: 175000 },
+                            { name: "چلو جوجه مکزیکی مخصوص", price: 215000 }
+                        ]
+                    },
+                    {
+                        name: "جوجه جنگلی",
+                        items: [
+                            { name: "جوجه جنگلی", price: 109000 },
+                            { name: "جوجه جنگلی دو سیخ", price: 218000 },
+                            { name: "چلو جوجه جنگلی", price: 175000 },
+                            { name: "چلو جوجه جنگلی دو سیخ", price: 215000 }
+                        ]
+                    },
+                    {
+                        name: "کتف و بال",
+                        items: [
+                            { name: "کتف زعفرانی", price: 85000 },
+                            { name: "بال زعفرانی", price: 85000 },
+                            { name: "کتف مکزیکی", price: 95000 },
+                            { name: "بال مکزیکی", price: 95000 }
+                        ]
+                    },
+                    {
+                        name: 'جگرکی',
+                        items: [
+                            { name: 'جگر', price: 85000 },
+                            { name: 'دل', price: 85000 },
+                            { name: 'شیردان', price: 60000 },
+                            { name: 'دنبه', price: 35000 }
+                        ]
+                    },
+                    {
+                        name: 'فانتزی ها',
+                        items: [
+                            { name: 'بادمجان کباب', price: 165000 },
+                            { name: 'گوشت و دنبه', price: 129000 },
+                            { name: 'جوجه میکس', price: 125000 },
+                            { name: 'پنیر کبابی', price: 65000 }
+                        ]
+                    }
+                ];
+
+                $scope.selectedItems = {}; // Track selected items across all menus
+                $scope.order = {
+                    address: '',
+                    phone_number: '',
+                    latitude: null,
+                    longitude: null
+                };
+
+                $scope.basketItems = []; // Items in the basket
+
+                $scope.selectMenu = function(menuName) {
+                    $scope.selectedMenu = menuName;
+                };
+
+                $scope.changeQuantity = function(menuName, item, change) {
+                    if ($scope.selectedMenu === menuName) {
+                        let currentQuantity = $scope.selectedItems[item] || 0;
+                        let newQuantity = Math.max(0, currentQuantity + change);
+                        if (newQuantity === 0) {
+                            delete $scope.selectedItems[item];
+                        } else {
+                            $scope.selectedItems[item] = newQuantity;
+                        }
+                        $scope.calculateTotalPrice();
+                    }
+                };
+
+                $scope.calculateTotalPrice = function() {
+                    $scope.totalPrice = $scope.menus.reduce((total, menu) => {
+                        return total + menu.items.reduce((subtotal, food) => {
+                            if ($scope.selectedItems[food.name]) {
+                                return subtotal + ($scope.selectedItems[food.name] * food.price);
+                            }
+                            return subtotal;
+                        }, 0);
+                    }, 0);
+
+                    // Update basket items
+                    $scope.basketItems = $scope.menus.flatMap(menu => menu.items).map(food => ({
+                        name: food.name,
+                        quantity: $scope.selectedItems[food.name] || 0,
+                        price: food.price,
+                        total: ($scope.selectedItems[food.name] || 0) * food.price
+                    })).filter(item => item.quantity > 0);
+                };
+
+                $scope.toggleBasket = function() {
+                    $scope.showBasket = !$scope.showBasket;
+                };
+
+                $scope.getLocation = function() {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(
+                            function(position) {
+                                $scope.$apply(function() {
+                                    $scope.order.latitude = position.coords.latitude;
+                                    $scope.order.longitude = position.coords.longitude;
+                                    alert('Location retrieved successfully!');
+                                });
+                            },
+                            function(error) {
+                                switch(error.code) {
+                                    case error.PERMISSION_DENIED:
+                                        alert("User denied the request for Geolocation.");
+                                        break;
+                                    case error.POSITION_UNAVAILABLE:
+                                        alert("Location information is unavailable.");
+                                        break;
+                                    case error.TIMEOUT:
+                                        alert("The request to get user location timed out.");
+                                        break;
+                                    case error.UNKNOWN_ERROR:
+                                        alert("An unknown error occurred.");
+                                        break;
+                                }
+                            }
+                        );
+                    } else {
+                        alert('Geolocation is not supported by this browser.');
+                    }
+                };
+
+                $scope.submitOrder = function() {
+                    if (Object.keys($scope.selectedItems).length === 0) {
+                        alert('Please select at least one item.');
+                        return;
+                    }
+
+                    const orderData = {
+                        selectedItems: $scope.selectedItems,
+                        ...$scope.order
+                    };
+                    $http.post('/order', orderData, {
+                      headers: { 'Content-Type': 'application/json' }
+                    }).then(function(response) {
+                         alert('Order submitted successfully!');
+                         $scope.selectedMenu = '';
+                         $scope.selectedItems = {};
+                         $scope.order = {
+                             address: '',
+                             phone_number: '',
+                             latitude: null,
+                             longitude: null
+                         };
+                         $scope.totalPrice = 0;
+                         $scope.showBasket = false; // Hide basket
+                    }, function(error) {
+                       alert('Error submitting order.');
+                    });
+                
+
+                    $scope.showPaymentOptions = true ;
+                    //$scope.showPaymentLink = true ;
+                    // You can now send `orderData` to your server
+                   
+            
+                 }
+            		    $scope.payOnline = function() {
+                    alert('Online payment option selected.');
+            		   		    $scope.showPaymentLink = true ;
+    
+                };
+                $scope.payAtHome = function() {
+                   alert('Payment on delivery option selected.');
+                };
+               
+                
+                
+
+            }]);
+    </script>
+</body>
+</html>
